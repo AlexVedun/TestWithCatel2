@@ -1,0 +1,57 @@
+﻿<catel:Window x:Class="TestWithCatel.Views.MainWindow"
+              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:catel="http://schemas.catelproject.com"
+              ResizeMode="CanResize">
+    <catel:Window.Resources>
+        <catel:ViewModelToViewConverter x:Key="viewModelToViewConverter">
+
+        </catel:ViewModelToViewConverter>
+    </catel:Window.Resources>
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <Label Grid.Row="0" 
+               Grid.Column="0" 
+               Content="Это пример программы-теста, написанный с помощью WPF и Catel"
+               FontFamily="Arial"
+               FontWeight="Bold"
+               FontSize="22" 
+               Margin="0,1,0,0" 
+               HorizontalContentAlignment="Center" />
+        <ContentControl 
+            Grid.Row="1"
+            Grid.Column="0"
+            VerticalAlignment="Stretch"
+            Content="{Binding currentSlide, Converter={StaticResource viewModelToViewConverter}}">
+        </ContentControl>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center">
+            <Button
+                Command="{Binding StartCommand}"
+                Content="Начать тест"
+                FontSize="14" 
+                VerticalAlignment="Bottom"
+                MinWidth="100"
+                MaxWidth="150"
+                Margin="0, 0, 0, 10" >
+            </Button>
+            <Button
+                Command="{Binding NextCommand}"
+                Content="Следующий слайд"
+                FontSize="14"
+                VerticalAlignment="Bottom"
+                MinWidth="100"
+                MaxWidth="150"
+                Margin="10, 0, 0, 10">
+                
+            </Button>
+        </StackPanel>
+        
+    </Grid>
+    
+</catel:Window>

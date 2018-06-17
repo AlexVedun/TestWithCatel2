@@ -1,0 +1,22 @@
+﻿<catel:UserControl x:Class="TestWithCatel.Views.SliderResultsView"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:catel="http://schemas.catelproject.com"
+                   Background="Aquamarine"
+                   VerticalAlignment="Stretch">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <Label Grid.Row="0" Content="Ваш результат:" />
+        <TextBlock
+            Grid.Row="1"
+            TextWrapping="Wrap"
+            Text="{Binding Score}">
+        </TextBlock>
+    </Grid>
+    
+</catel:UserControl>
