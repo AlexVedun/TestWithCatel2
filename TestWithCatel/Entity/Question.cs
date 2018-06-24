@@ -11,7 +11,12 @@ namespace TestWithCatel.Entity
     public class Question
     {
         public int Id { get; set; }
+        public int Id_Theme { get; set; }
         public string Text { get; set; }
         public ObservableCollection<OptionModel> Options { get; set; }
+        public Question()
+        {
+            Options = new ObservableCollection<OptionModel>();
+        }
     }
 }

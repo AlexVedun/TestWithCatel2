@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Questions>
+	<Theme id="1" Text="Металлография">
+		<Question id="1" Text="Какая из представленных структурных составляющах имеет наибольшую твердость?">
+			<Item isRight="false">Перлит</Item>
+			<Item isRight="false">Феррит</Item>
+			<Item isRight="true">Цементит</Item>
+			<Item isRight="false">Аустенит</Item>
+		</Question>
+		<Question id="2" Text="При каком содержании углерода формируется перлитная структура?">
+			<Item isRight="false">0,5%</Item>
+			<Item isRight="false">0,6%</Item>
+			<Item isRight="false">0,7%</Item>
+			<Item isRight="true">0,8%</Item>
+		</Question>
+		<Question id="3" Text="Что такое сталь?">
+			<Item isRight="true">Это сплав железа с углеродом и другими элементами, содержащий до 2,14% углерода</Item>
+			<Item isRight="false">Это сплав железа с углеродом и другими элементами, содержащий не менее 2,14% углерода</Item>
+			<Item isRight="false">Это сплав железа с углеродом и другими элементами, содержащий до 4,3% углерода</Item>
+			<Item isRight="false">Это сплав железа с углеродом и другими элементами, содержащий более 4,3% углерода</Item>
+		</Question>
+	</Theme>
+	<Theme id="2" Text="Твердость структур">
+		<Question id="1" Text="Укажите твердость феррита">
+			<Item isRight="true">80-100 HB</Item>
+			<Item isRight="false">160-200 HB</Item>
+			<Item isRight="false">600-700 HB</Item>
+			<Item isRight="false">более 800 HB</Item>
+		</Question>
+		<Question id="2" Text="Укажите твердость аустенита">
+			<Item isRight="false">80-100 HB</Item>
+			<Item isRight="true">160-200 HB</Item>
+			<Item isRight="false">600-700 HB</Item>
+			<Item isRight="false">более 800 HB</Item>
+		</Question>
+		<Question id="3" Text="Укажите твердость ледебурита">
+			<Item isRight="false">80-100 HB</Item>
+			<Item isRight="false">160-200 HB</Item>
+			<Item isRight="true">600-700 HB</Item>
+			<Item isRight="false">более 800 HB</Item>
+		</Question>
+	</Theme>
+</Questions>
