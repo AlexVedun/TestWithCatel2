@@ -18,13 +18,13 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" >
-            <Button
+            <!--<Button
                 Content="Открыть файл вопросов"
                 FontSize="14"
                 Margin="0, 0, 10, 0"
                 Command="{Binding OpenFileCommand}">
-            </Button>
-            <Label Content="Список тем">
+            </Button>-->
+            <!--<Label Content="Список тем">
                 
             </Label>
             <ComboBox Width="200" ItemsSource="{Binding Path=ThemesList}" SelectedItem="{Binding Path=SelectedTheme}" >
@@ -37,7 +37,7 @@
                         </StackPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
-            </ComboBox>
+            </ComboBox>-->
         </StackPanel>        
         <Label Grid.Row="1" 
                Grid.Column="0" 
@@ -74,7 +74,7 @@
                 
             </Button>
         </StackPanel>
-        <!--<Menu HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="Auto" IsMainMenu="true" ItemsSource="{Binding Path=mainMenu}" >
+        <Menu HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="Auto" IsMainMenu="true" ItemsSource="{Binding Path=mainMenu}" >
             <Menu.ItemContainerStyle>
                 <Style TargetType="MenuItem" >
                     <Setter Property="Header" Value="{Binding Path=Name}" />
@@ -82,15 +82,15 @@
                     <Setter Property="Command" Value="{Binding Path=Command}" />
                 </Style>
             </Menu.ItemContainerStyle>
-            --><!--<MenuItem Header="Файл" >
+            <!--<MenuItem Header="Файл" >
                 <MenuItem Header="Открыть файл вопросов" Command="{Binding OpenFileCommand}"/>
                 <Separator></Separator>
                 <MenuItem Header="Выход" Command="{Binding ExitCommand}"/>
             </MenuItem>
             <MenuItem Header="Список тем" ItemsSource="{Binding themesList}" Command="{Binding SelectThemeCommand}">
                
-            </MenuItem>--><!--
-        </Menu>-->
+            </MenuItem>-->
+        </Menu>
 
     </Grid>
     

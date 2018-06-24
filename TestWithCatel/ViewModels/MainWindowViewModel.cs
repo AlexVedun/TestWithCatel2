@@ -60,15 +60,15 @@
 
         public static readonly PropertyData SelectedThemeProperty = RegisterProperty(nameof(SelectedTheme), typeof(ThemeModel), null);
 
-       
-        // Для меню
-        //public ObservableCollection<BindableMenuItem> mainMenu
-        //{
-        //    get { return GetValue<ObservableCollection<BindableMenuItem>>(mainMenuProperty); }
-        //    set { SetValue(mainMenuProperty, value); }
-        //}
 
-        //public static readonly PropertyData mainMenuProperty = RegisterProperty(nameof(mainMenu), typeof(ObservableCollection<BindableMenuItem>), null);
+        // Для меню
+        public ObservableCollection<BindableMenuItem> mainMenu
+        {
+            get { return GetValue<ObservableCollection<BindableMenuItem>>(mainMenuProperty); }
+            set { SetValue(mainMenuProperty, value); }
+        }
+
+        public static readonly PropertyData mainMenuProperty = RegisterProperty(nameof(mainMenu), typeof(ObservableCollection<BindableMenuItem>), null);
 
 
         public MainWindowViewModel()
@@ -117,17 +117,22 @@
 
             Console.WriteLine(IsOptionSelected);
             NextCommand = new Command(OnNextCommandExecute, () => IsOptionSelected == true);
-            //ExitCommand = new Command(OnExitCommandExecute);
+            ExitCommand = new Command(OnExitCommandExecute);
             OpenFileCommand = new Command(OnOpenFileCommandExecute);
-            //SelectThemeCommand = new Command(OnSelectThemeCommandExecute);
+            SelectThemeCommand = new Command(OnSelectThemeCommandExecute);
 
             // Создание меню
-            //mainMenu = new ObservableCollection<BindableMenuItem>();
-            //mainMenu.Add(
-            //    new BindableMenuItem { Name = "Файл", Children = new List<BindableMenuItem> {
-            //        new BindableMenuItem { Name = "Открыть файл вопросов", Command = OpenFileCommand },
-            //        new BindableMenuItem { Name = "Выход", Command = ExitCommand} } });
-            //mainMenu.Add(new BindableMenuItem { Name = "Список тем" });
+            mainMenu = new ObservableCollection<BindableMenuItem>();
+            mainMenu.Add(
+                new BindableMenuItem
+                {
+                    Name = "Файл",
+                    Children = new ObservableCollection<BindableMenuItem> {
+                    new BindableMenuItem { Name = "Открыть файл вопросов", Command = OpenFileCommand },
+                    new BindableMenuItem { Name = "Выход", Command = ExitCommand} }
+                });
+            mainMenu.Add(new BindableMenuItem { Name = "Список тем" });
+            //RaisePropertyChanged(nameof(mainMenu));
         }
 
         public Command StartCommand { get; private set; }
@@ -198,13 +203,14 @@
         }
 
 
-        //public Command ExitCommand { get; private set; }
+        public Command ExitCommand { get; private set; }
 
 
-        //private void OnExitCommandExecute()
-        //{
-
-        //}
+        private void OnExitCommandExecute()
+        {
+            //App.Current.MainWindow.Close();
+            App.Current.Shutdown();
+        }
 
         public Command OpenFileCommand { get; private set; }
 
@@ -233,35 +239,36 @@
                     ThemesList.Add(themeItem);
                 }
                 // Для динамического меню
-                //Console.WriteLine(mainMenu[1]);
-                //if (mainMenu[1].Children == null)
-                //{
-                //    mainMenu[1].Children = new List<BindableMenuItem>();
-                //}
-                //else
-                //{
-                //    mainMenu[1].Children.Clear();
-                //}
-                //questionsReader.Open(openFileDialog.FileName);
-                //foreach (var item in questionsReader.GetThemes())
-                //{
-                //    BindableMenuItem menuItem = new BindableMenuItem();
-                //    menuItem.Name = item;
-                //    Console.WriteLine(menuItem.Name);
-                //    menuItem.Command = SelectThemeCommand;
-                //    mainMenu[1].Children.Add(menuItem);
-                //}
+                Console.WriteLine(mainMenu[1]);
+                if (mainMenu[1].Children == null)
+                {
+                    mainMenu[1].Children = new ObservableCollection<BindableMenuItem>();
+                }
+                else
+                {
+                    mainMenu[1].Children.Clear();
+                }
+                questionsReader.Open(openFileDialog.FileName);
+                foreach (var item in questionsReader.GetThemes())
+                {
+                    BindableMenuItem menuItem = new BindableMenuItem();
+                    menuItem.Name = item;
+                    Console.WriteLine(menuItem.Name);
+                    menuItem.Command = SelectThemeCommand;
+                    mainMenu[1].Children.Add(menuItem);
+                }
+                RaisePropertyChanged(nameof(mainMenu));
             }
 
         }
 
 
-        //public Command SelectThemeCommand { get; private set; }
+        public Command SelectThemeCommand { get; private set; }
 
-        //private void OnSelectThemeCommandExecute()
-        //{
-        //    Console.WriteLine("Работает!");
-        //}
+        private void OnSelectThemeCommandExecute()
+        {
+            Console.WriteLine("Работает!");
+        }
 
         public override string Title { get { return "TestWithCatel"; } }
 

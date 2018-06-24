@@ -100,7 +100,7 @@
     <Compile Include="Entity\IQuestionsReader.cs" />
     <Compile Include="Models\OptionModel.cs" />
     <Compile Include="Models\ThemeModel.cs" />
-    <Compile Include="ViewModels\BindableMenuItem.cs" />
+    <Compile Include="Models\BindableMenuItem.cs" />
     <Compile Include="ViewModels\SliderResultsViewModel.cs" />
     <Compile Include="ViewModels\Slider1ViewModel.cs" />
     <Compile Include="Views\SliderResultsView.xaml.cs">
