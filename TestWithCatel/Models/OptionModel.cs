@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace TestWithCatel.Models
 {
@@ -27,24 +28,13 @@ namespace TestWithCatel.Models
         public static readonly PropertyData NameProperty = RegisterProperty(nameof(Name), typeof(string), null);
 
 
-
-        public bool IsChecked
+        public ICommand Command
         {
-            get { return GetValue<bool>(IsCheckedProperty); }
-            set { SetValue(IsCheckedProperty, value); }
+            get { return GetValue<ICommand>(CommandProperty); }
+            set { SetValue(CommandProperty, value); }
         }
 
-        public static readonly PropertyData IsCheckedProperty = RegisterProperty(nameof(IsChecked), typeof(bool), null, (sender, e) => ((OptionModel)sender).OnIsCheckedChanged());
-
-        private void OnIsCheckedChanged()
-        {
-            Console.WriteLine(IsChecked);
-            if (IsChecked)
-            {
-                OptionSelectedHandler.OnOptionSelected(Id);
-            }
-            
-        }
+        public static readonly PropertyData CommandProperty = RegisterProperty(nameof(Command), typeof(ICommand), null);
 
         public bool IsCorrect
         {
@@ -53,14 +43,5 @@ namespace TestWithCatel.Models
         }
 
         public static readonly PropertyData IsCorrectProperty = RegisterProperty(nameof(IsCorrect), typeof(bool), null);
-
-
-        public IOptionSelectedHandler OptionSelectedHandler
-        {
-            get { return GetValue<IOptionSelectedHandler>(OptionSelectedHandlerProperty); }
-            set { SetValue(OptionSelectedHandlerProperty, value); }
-        }
-
-        public static readonly PropertyData OptionSelectedHandlerProperty = RegisterProperty(nameof(OptionSelectedHandler), typeof(IOptionSelectedHandler), null);
     }
 }

@@ -1,8 +1,8 @@
 ﻿namespace TestWithCatel.Views
 {
-    public partial class SliderResultsView
+    public partial class SingleAnswerSlideView
     {
-        public SliderResultsView()
+        public SingleAnswerSlideView()
         {
             InitializeComponent();
         }

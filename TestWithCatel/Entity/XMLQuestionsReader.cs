@@ -10,7 +10,6 @@ namespace TestWithCatel.Entity
 {
     class XMLQuestionsReader : IQuestionsReader
     {
-        private string mFileName;
         private XDocument mXMLFile;
 
         public XMLQuestionsReader()
@@ -35,16 +34,12 @@ namespace TestWithCatel.Entity
             foreach (var item in elements)
             {
                 Question question = new Question();
-                //Console.WriteLine((int)item.Attribute("id"));
-                //Console.WriteLine((string)item.Attribute("Text"));
                 question.Id = (int)item.Attribute("id");
                 question.Id_Theme = _themeId;
                 question.Text = (string)item.Attribute("Text");
                 int answerId = 1;
                 foreach (var answers in item.Descendants("Item"))
                 {
-                    //Console.WriteLine((string)answers);
-                    //Console.WriteLine((bool)answers.Attribute("isRight"));
                     OptionModel answer = new OptionModel();
                     answer.Id = answerId;
                     answer.Name = (string)answers;

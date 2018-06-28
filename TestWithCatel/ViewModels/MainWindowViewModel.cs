@@ -10,21 +10,17 @@
     using TestWithCatel.Entity;
     using TestWithCatel.Models;
 
-    public class MainWindowViewModel : ViewModelBase, IOptionSelectedHandler
+    public class MainWindowViewModel : ViewModelBase
     {
         private List<IViewModel> mSlidesList;
-        //private bool mIsOptionSelected = false;
-
-        //private ObservableCollection<OptionModel> mOptionsMock;
-        //private ObservableCollection<OptionModel> mOptionsMock2;
 
         private IList<Question> mQuestions;
 
         private int mScore = 0;
         private int mScreenCounter = 0;
+        private bool isThemeSelected = false;
 
         private IQuestionsReader questionsReader = new XMLQuestionsReader();
-        //public List<BindableMenuItem> mainMenu = new List<BindableMenuItem>();
 
         public bool IsOptionSelected
         {
@@ -41,26 +37,7 @@
         }
 
         public static readonly PropertyData currentSlideProperty = RegisterProperty(nameof(currentSlide), typeof(IViewModel), null);
-
-
-        public ObservableCollection<ThemeModel> ThemesList
-        {
-            get { return GetValue<ObservableCollection<ThemeModel>>(themesListProperty); }
-            set { SetValue(themesListProperty, value); }
-        }
-
-        public static readonly PropertyData themesListProperty = RegisterProperty(nameof(ThemesList), typeof(ObservableCollection<ThemeModel>), null);
-
-
-        public ThemeModel SelectedTheme
-        {
-            get { return GetValue<ThemeModel>(SelectedThemeProperty); }
-            set { SetValue(SelectedThemeProperty, value); }
-        }
-
-        public static readonly PropertyData SelectedThemeProperty = RegisterProperty(nameof(SelectedTheme), typeof(ThemeModel), null);
-
-
+        
         // Для меню
         public ObservableCollection<BindableMenuItem> mainMenu
         {
@@ -70,57 +47,22 @@
 
         public static readonly PropertyData mainMenuProperty = RegisterProperty(nameof(mainMenu), typeof(ObservableCollection<BindableMenuItem>), null);
 
-
         public MainWindowViewModel()
         {
-            //mOptionsMock =
-            //   new ObservableCollection<OptionModel> {
-
-            //            new OptionModel(){ Id = 1, Name = "Перлит", IsCorrect = false, OptionSelectedHandler = this }
-            //            , new OptionModel(){ Id = 2, Name = "Феррит", IsCorrect = false, OptionSelectedHandler = this }
-            //            , new OptionModel(){ Id = 3, Name = "Цементит", IsCorrect = true, OptionSelectedHandler = this }
-            //            , new OptionModel(){ Id = 4, Name = "Аустенит", IsCorrect = false, OptionSelectedHandler = this }
-            //       };
-
-            //mOptionsMock2 =
-            //   new ObservableCollection<OptionModel> {
-
-            //            new OptionModel(){ Id = 5, Name = "1", IsCorrect = true, OptionSelectedHandler = this }
-            //            , new OptionModel(){ Id = 6, Name = "2", IsCorrect = false, OptionSelectedHandler = this }
-            //            , new OptionModel(){ Id = 7, Name = "3", IsCorrect = false, OptionSelectedHandler = this }
-            //            , new OptionModel(){ Id = 8, Name = "4", IsCorrect = false, OptionSelectedHandler = this }
-            //       };
-
-            //mQuestions = new List<Question>() {
-
-            //    new Question(){
-            //        Id = 1
-            //        , Text = "Укажите структурную составляющую с наибольшей твердостью:"
-            //        , Options = mOptionsMock}
-            //    , new Question(){
-            //        Id = 2
-            //        , Text = "Сколько?"
-            //        , Options = mOptionsMock2}
-            //};
-
-
-
             mSlidesList = new List<IViewModel>
             {
-                //new Slider1ViewModel(mOptionsMock)
-                new Slider1ViewModel()
+                new SingleAnswerSlideViewModel()
                 , new SliderResultsViewModel()
             };
-            //currentSlide = mSlidesList[0];
-            // TODO: Move code below to constructor
-            StartCommand = new Command(OnStartCommandExecute);
 
-            Console.WriteLine(IsOptionSelected);
+            StartCommand = new Command(OnStartCommandExecute);
             NextCommand = new Command(OnNextCommandExecute, () => IsOptionSelected == true);
             ExitCommand = new Command(OnExitCommandExecute);
             OpenFileCommand = new Command(OnOpenFileCommandExecute);
-            SelectThemeCommand = new Command(OnSelectThemeCommandExecute);
+            SelectThemeCommand = new Command<int>(OnSelectThemeCommandExecute);
+            OptionSelectCommand = new Command(OnOptionSelectCommandExecute);
 
+            ((SingleAnswerSlideViewModel)mSlidesList[0]).IndicateAnswerCheck = OptionSelectCommand;
             // Создание меню
             mainMenu = new ObservableCollection<BindableMenuItem>();
             mainMenu.Add(
@@ -132,33 +74,31 @@
                     new BindableMenuItem { Name = "Выход", Command = ExitCommand} }
                 });
             mainMenu.Add(new BindableMenuItem { Name = "Список тем" });
-            //RaisePropertyChanged(nameof(mainMenu));
         }
 
         public Command StartCommand { get; private set; }
 
         private void OnStartCommandExecute()
         {
-            if (SelectedTheme != null)
+            if (isThemeSelected)
             {
                 // загрузка вопросов по выбранной теме
-                mQuestions = questionsReader.GetQuestions(SelectedTheme.Id);
                 for (int i = 0; i < mQuestions.Count; i++)
                 {
                     for (int j = 0; j < mQuestions[i].Options.Count; j++)
                     {
-                        mQuestions[i].Options[j].OptionSelectedHandler = this;
+                        mQuestions[i].Options[j].Command = ((SingleAnswerSlideViewModel)mSlidesList[0]).SelectAnswerCommand;
                     }
                 }
-                //-----------------------------------------
+                //--------------------------------------
                 mScreenCounter = 0;
-                ((Slider1ViewModel)mSlidesList[0]).Options.Clear();
+                ((SingleAnswerSlideViewModel)mSlidesList[0]).Options.Clear();
                 foreach (var item in mQuestions[0].Options)
                 {
-                    ((Slider1ViewModel)mSlidesList[0]).Options.Add(item);
+                    ((SingleAnswerSlideViewModel)mSlidesList[0]).Options.Add(item);
                 }
-            ((Slider1ViewModel)mSlidesList[0]).QuestionText = mQuestions[0].Text;
-                ((Slider1ViewModel)mSlidesList[0]).QuestionNumber = mScreenCounter + 1;
+                ((SingleAnswerSlideViewModel)mSlidesList[0]).QuestionText = mQuestions[0].Text;
+                ((SingleAnswerSlideViewModel)mSlidesList[0]).QuestionNumber = mScreenCounter + 1;
                 currentSlide = mSlidesList[0];
             }
         }
@@ -170,48 +110,35 @@
             mScreenCounter++;
 
             IsOptionSelected = false;
-            foreach (var item in ((Slider1ViewModel)currentSlide).Options)
-            {
-                if (item.IsChecked == true && item.IsCorrect == true)
+            if (((SingleAnswerSlideViewModel)currentSlide).IsRightAnswer)
                 {
-                    Console.WriteLine("You're right!");
                     mScore++;
                 }
-                item.IsChecked = false;
-            }
-            Console.WriteLine(mSlidesList.Count + " ");
             if (mSlidesList.Count < mScreenCounter)
             {
-                Console.WriteLine("The end");
-                //mSlidesList.Add(new SliderResultsViewModel(mScore));
                 ((SliderResultsViewModel)mSlidesList[1]).Score = mScore;
                 currentSlide = mSlidesList[1];
                 mScore = 0;
             }
             else
             {
-                ((Slider1ViewModel)currentSlide).Options.Clear();
+                ((SingleAnswerSlideViewModel)currentSlide).Options.Clear();
                 foreach (var item in mQuestions[mScreenCounter].Options)
                 {
-                    ((Slider1ViewModel)currentSlide).Options.Add(item);
+                    ((SingleAnswerSlideViewModel)currentSlide).Options.Add(item);
                 }
-                ((Slider1ViewModel)currentSlide).QuestionText = mQuestions[mScreenCounter].Text;
-                ((Slider1ViewModel)currentSlide).QuestionNumber = mScreenCounter + 1;
+                ((SingleAnswerSlideViewModel)currentSlide).QuestionText = mQuestions[mScreenCounter].Text;
+                ((SingleAnswerSlideViewModel)currentSlide).QuestionNumber = mScreenCounter + 1;
             }
-
-
         }
-
-
+        // выход из программы
         public Command ExitCommand { get; private set; }
-
 
         private void OnExitCommandExecute()
         {
-            //App.Current.MainWindow.Close();
             App.Current.Shutdown();
         }
-
+        // открыть файл
         public Command OpenFileCommand { get; private set; }
 
         private void OnOpenFileCommandExecute()
@@ -223,21 +150,6 @@
                 questionsReader.Open(openFileDialog.FileName);
                 List<int> themesIdList = questionsReader.GetThemesId();
                 List<string> themesList = questionsReader.GetThemes();
-                if (ThemesList == null)
-                {
-                    ThemesList = new ObservableCollection<ThemeModel>();
-                }
-                else
-                {
-                    ThemesList.Clear();
-                }
-                for (int i = 0; i < questionsReader.GetThemesId().Count; i++)
-                {
-                    ThemeModel themeItem = new ThemeModel();
-                    themeItem.Id = themesIdList[i];
-                    themeItem.Text = themesList[i];
-                    ThemesList.Add(themeItem);
-                }
                 // Для динамического меню
                 Console.WriteLine(mainMenu[1]);
                 if (mainMenu[1].Children == null)
@@ -248,40 +160,35 @@
                 {
                     mainMenu[1].Children.Clear();
                 }
-                questionsReader.Open(openFileDialog.FileName);
-                foreach (var item in questionsReader.GetThemes())
+                for (int i = 0; i < questionsReader.GetThemesId().Count; i++)
                 {
                     BindableMenuItem menuItem = new BindableMenuItem();
-                    menuItem.Name = item;
+                    menuItem.Id = themesIdList[i];
+                    menuItem.Name = themesList[i];
                     Console.WriteLine(menuItem.Name);
                     menuItem.Command = SelectThemeCommand;
                     mainMenu[1].Children.Add(menuItem);
                 }
-                RaisePropertyChanged(nameof(mainMenu));
             }
 
         }
+        // выбор темы
+        public Command<int> SelectThemeCommand { get; private set; }
 
-
-        public Command SelectThemeCommand { get; private set; }
-
-        private void OnSelectThemeCommandExecute()
+        private void OnSelectThemeCommandExecute(int _id)
         {
-            Console.WriteLine("Работает!");
+            isThemeSelected = true;
+            mQuestions = questionsReader.GetQuestions(_id);
+        }
+
+        public Command OptionSelectCommand { get; private set; }
+
+        private void OnOptionSelectCommandExecute()
+        {
+            IsOptionSelected = true;
         }
 
         public override string Title { get { return "TestWithCatel"; } }
-
-        // TODO: Register models with the vmpropmodel codesnippet
-        // TODO: Register view model properties with the vmprop or vmpropviewmodeltomodel codesnippets
-        // TODO: Register commands with the vmcommand or vmcommandwithcanexecute codesnippets
-
-        public void OnOptionSelected(int _id)
-        {
-
-            IsOptionSelected = true;
-            Console.WriteLine(_id);
-        }
 
         protected override async Task InitializeAsync()
         {

@@ -79,7 +79,8 @@
                 <Style TargetType="MenuItem" >
                     <Setter Property="Header" Value="{Binding Path=Name}" />
                     <Setter Property="ItemsSource" Value="{Binding Path=Children}" />
-                    <Setter Property="Command" Value="{Binding Path=Command}" />
+                    <Setter Property="Command" Value="{Binding Path=Command}"/>
+                    <Setter Property="CommandParameter" Value="{Binding Path=Id}"/>
                 </Style>
             </Menu.ItemContainerStyle>
             <!--<MenuItem Header="Файл" >
