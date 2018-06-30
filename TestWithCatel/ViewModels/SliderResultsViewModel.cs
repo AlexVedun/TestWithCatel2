@@ -14,7 +14,7 @@
         public SliderResultsViewModel() {
 
         }
-
+        // количество правильных ответов
         public int Score
         {
             get { return GetValue<int>(ScoreProperty); }

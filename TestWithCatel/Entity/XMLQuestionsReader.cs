@@ -8,25 +8,16 @@ using TestWithCatel.Models;
 
 namespace TestWithCatel.Entity
 {
+    // класс для загрузки вопросов из XML-файла
     class XMLQuestionsReader : IQuestionsReader
     {
         private XDocument mXMLFile;
-
-        public XMLQuestionsReader()
-        {
-
-        }
-
-        public XMLQuestionsReader(string _fileName)
-        {
-
-        }
-
+        // получить Id темы по названию       
         public int GetIdByTheme(string _theme)
         {
             return (int)mXMLFile.Descendants("Theme").Where(e => ((string)e.Attribute("Text") == _theme)).Attributes("id").FirstOrDefault();
         }
-
+        // получить вопросы для темы по ее Id
         public List<Question> GetQuestions(int _themeId)
         {
             List<Question> questions = new List<Question>();
@@ -51,12 +42,12 @@ namespace TestWithCatel.Entity
             }
             return questions;
         }
-
+        // получить тему по ее Id
         public string GetThemeById(int _id)
         {
             return (string)mXMLFile.Descendants("Theme").Where(e => ((int)e.Attribute("id") == _id)).Attributes("Text").FirstOrDefault();
         }
-
+        // получить список тем
         public List<string> GetThemes()
         {
             var elements = mXMLFile.Descendants("Theme");
@@ -67,7 +58,7 @@ namespace TestWithCatel.Entity
             }
             return themes;
         }
-
+        // получить список Id тем
         public List<int> GetThemesId()
         {
             List<int> themsId = new List<int>();
@@ -78,7 +69,7 @@ namespace TestWithCatel.Entity
             }
             return themsId;
         }
-
+        // открыть файл
         public void Open(string _cs)
         {
             mXMLFile = XDocument.Load(_cs);

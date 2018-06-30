@@ -7,6 +7,7 @@ using TestWithCatel.Entity;
 
 namespace TestWithCatel
 {
+    // интерфейс для загрузки вопросов с вариантами ответов из различных источников
     interface IQuestionsReader
     {
         void Open(string _cs);

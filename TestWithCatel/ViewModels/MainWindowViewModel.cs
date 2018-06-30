@@ -12,16 +12,16 @@
 
     public class MainWindowViewModel : ViewModelBase
     {
-        private List<IViewModel> mSlidesList;
+        private List<IViewModel> mSlidesList;   // список слайдов
 
-        private IList<Question> mQuestions;
+        private IList<Question> mQuestions;     // список вопросов
 
-        private int mScore = 0;
-        private int mScreenCounter = 0;
-        private bool isThemeSelected = false;
+        private int mScore = 0;                 // счетчик правильных ответов
+        private int mScreenCounter = 0;         // счечик экранов с вопросами
+        private bool isThemeSelected = false;   // индикатор выбора темы
 
         private IQuestionsReader questionsReader = new XMLQuestionsReader();
-
+        // индикатор выбора ответа
         public bool IsOptionSelected
         {
             get { return GetValue<bool>(IsOptionSelectedProperty); }
@@ -29,7 +29,7 @@
         }
 
         public static readonly PropertyData IsOptionSelectedProperty = RegisterProperty(nameof(IsOptionSelected), typeof(bool), null);
-
+        // текущий экран с вопросами
         public IViewModel currentSlide
         {
             get { return GetValue<IViewModel>(currentSlideProperty); }
@@ -38,7 +38,7 @@
 
         public static readonly PropertyData currentSlideProperty = RegisterProperty(nameof(currentSlide), typeof(IViewModel), null);
         
-        // Для меню
+        // Главное меню
         public ObservableCollection<BindableMenuItem> mainMenu
         {
             get { return GetValue<ObservableCollection<BindableMenuItem>>(mainMenuProperty); }
@@ -75,7 +75,7 @@
                 });
             mainMenu.Add(new BindableMenuItem { Name = "Список тем" });
         }
-
+        // команда запуска теста
         public Command StartCommand { get; private set; }
 
         private void OnStartCommandExecute()
@@ -102,7 +102,7 @@
                 currentSlide = mSlidesList[0];
             }
         }
-
+        // команда перехода к следующему вопросу
         public Command NextCommand { get; private set; }
 
         private void OnNextCommandExecute()
@@ -150,7 +150,7 @@
                 questionsReader.Open(openFileDialog.FileName);
                 List<int> themesIdList = questionsReader.GetThemesId();
                 List<string> themesList = questionsReader.GetThemes();
-                // Для динамического меню
+                // Сождаем меню с вариантами тем
                 if (mainMenu[1].Children == null)
                 {
                     mainMenu[1].Children = new ObservableCollection<BindableMenuItem>();
@@ -179,14 +179,14 @@
             mQuestions = questionsReader.GetQuestions(_id);
             TestName = questionsReader.GetThemeById(_id);
         }
-
+        // реакция на выбор ответа
         public Command OptionSelectCommand { get; private set; }
 
         private void OnOptionSelectCommandExecute()
         {
             IsOptionSelected = true;
         }
-
+        // тема теста
         public string TestName
         {
             get { return GetValue<string>(TestNameProperty); }

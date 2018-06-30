@@ -18,7 +18,7 @@ namespace TestWithCatel.ViewModels
             Options = new ObservableCollection<OptionModel>();
             SelectAnswerCommand = new Command<int>(OnSelectAnswerCommandExecute);
         }
-
+        // коллекция ответов
         public ObservableCollection<OptionModel> Options
         {
             get { return GetValue<ObservableCollection<OptionModel>>(OptionsProperty); }
@@ -26,7 +26,7 @@ namespace TestWithCatel.ViewModels
         }
 
         public static readonly PropertyData OptionsProperty = RegisterProperty(nameof(Options), typeof(ObservableCollection<OptionModel>), null);
-
+        // индикатор правильного ответа
         public bool IsRightAnswer
         {
             get { return GetValue<bool>(IsRightAnswerProperty); }
@@ -34,7 +34,7 @@ namespace TestWithCatel.ViewModels
         }
 
         public static readonly PropertyData IsRightAnswerProperty = RegisterProperty(nameof(IsRightAnswer), typeof(bool), null);
-
+        // выбранный ответ
         public OptionModel SelectedOption
         {
             get { return GetValue<OptionModel>(SelectedOptionProperty); }
@@ -42,7 +42,7 @@ namespace TestWithCatel.ViewModels
         }
 
         public static readonly PropertyData SelectedOptionProperty = RegisterProperty(nameof(SelectedOption), typeof(OptionModel), null);
-
+        // текст вопроса
         public string QuestionText
         {
             get { return GetValue<string>(QuestionTextProperty); }
@@ -50,7 +50,7 @@ namespace TestWithCatel.ViewModels
         }
 
         public static readonly PropertyData QuestionTextProperty = RegisterProperty(nameof(QuestionText), typeof(string), null);
-
+        // номер вопроса
         public int QuestionNumber
         {
             get { return GetValue<int>(QuestionNumberProperty); }
@@ -58,7 +58,7 @@ namespace TestWithCatel.ViewModels
         }
 
         public static readonly PropertyData QuestionNumberProperty = RegisterProperty(nameof(QuestionNumber), typeof(int), null);
-
+        // индикатор выбора ответа
         public bool IsAnswerChecked
         {
             get { return GetValue<bool>(IsAnswerCheckedProperty); }
@@ -66,7 +66,7 @@ namespace TestWithCatel.ViewModels
         }
 
         public static readonly PropertyData IsAnswerCheckedProperty = RegisterProperty(nameof(IsAnswerChecked), typeof(bool), null);
-
+        // обработка выбора ответа
         public Command<int> SelectAnswerCommand { get; private set; }
 
         private void OnSelectAnswerCommandExecute(int _id)
@@ -83,7 +83,8 @@ namespace TestWithCatel.ViewModels
             IsAnswerChecked = true;
             IndicateAnswerCheck.Execute();
         }
-
+        // команда из главного окна, которая привязывается при создании экрана
+        // служит для передачи реакции на выбор варианта ответа в главное окно
         public Command IndicateAnswerCheck
         {
             get { return GetValue<Command>(IndicateAnswerCheckProperty); }

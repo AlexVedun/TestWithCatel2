@@ -11,8 +11,10 @@ using System.Windows.Input;
 
 namespace TestWithCatel.Models
 {
+    // класс-модель, упрощенно описывающий элемент меню
     public class BindableMenuItem : ModelBase
     {
+        // идентификатор
         public int Id
         {
             get { return GetValue<int>(IdProperty); }
@@ -20,7 +22,7 @@ namespace TestWithCatel.Models
         }
 
         public static readonly PropertyData IdProperty = RegisterProperty(nameof(Id), typeof(int), null);
-
+        // текст пункта меню
         public string Name
         {
             get { return GetValue<string>(NameProperty); }
@@ -28,8 +30,7 @@ namespace TestWithCatel.Models
         }
 
         public static readonly PropertyData NameProperty = RegisterProperty(nameof(Name), typeof(string), null);
-
-
+        // коллекция элементов подменю
         public ObservableCollection<BindableMenuItem> Children
         {
             get { return GetValue<ObservableCollection<BindableMenuItem>>(ChildrenProperty); }
@@ -37,8 +38,7 @@ namespace TestWithCatel.Models
         }
 
         public static readonly PropertyData ChildrenProperty = RegisterProperty(nameof(Children), typeof(ObservableCollection<BindableMenuItem>), null);
-
-
+        // команда, которая выполняется по клику на пункт меню
         public ICommand Command
         {
             get { return GetValue<ICommand>(CommandProperty); }
