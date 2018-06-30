@@ -151,7 +151,6 @@
                 List<int> themesIdList = questionsReader.GetThemesId();
                 List<string> themesList = questionsReader.GetThemes();
                 // Для динамического меню
-                Console.WriteLine(mainMenu[1]);
                 if (mainMenu[1].Children == null)
                 {
                     mainMenu[1].Children = new ObservableCollection<BindableMenuItem>();
@@ -165,7 +164,6 @@
                     BindableMenuItem menuItem = new BindableMenuItem();
                     menuItem.Id = themesIdList[i];
                     menuItem.Name = themesList[i];
-                    Console.WriteLine(menuItem.Name);
                     menuItem.Command = SelectThemeCommand;
                     mainMenu[1].Children.Add(menuItem);
                 }
@@ -179,6 +177,7 @@
         {
             isThemeSelected = true;
             mQuestions = questionsReader.GetQuestions(_id);
+            TestName = questionsReader.GetThemeById(_id);
         }
 
         public Command OptionSelectCommand { get; private set; }
@@ -187,6 +186,14 @@
         {
             IsOptionSelected = true;
         }
+
+        public string TestName
+        {
+            get { return GetValue<string>(TestNameProperty); }
+            set { SetValue(TestNameProperty, value); }
+        }
+
+        public static readonly PropertyData TestNameProperty = RegisterProperty(nameof(TestName), typeof(string), null);
 
         public override string Title { get { return "TestWithCatel"; } }
 

@@ -16,32 +16,10 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" >
-            <!--<Button
-                Content="Открыть файл вопросов"
-                FontSize="14"
-                Margin="0, 0, 10, 0"
-                Command="{Binding OpenFileCommand}">
-            </Button>-->
-            <!--<Label Content="Список тем">
-                
-            </Label>
-            <ComboBox Width="200" ItemsSource="{Binding Path=ThemesList}" SelectedItem="{Binding Path=SelectedTheme}" >
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Path=Id}"/>
-                            <TextBlock Text=" - "/>
-                            <TextBlock Text="{Binding Path=Text}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>-->
-        </StackPanel>        
+       
         <Label Grid.Row="1" 
                Grid.Column="0" 
-               Content="Это пример программы-теста, написанный с помощью WPF и Catel"
+               Content="{Binding TestName}"
                FontFamily="Arial"
                FontWeight="Bold"
                FontSize="22" 
@@ -83,14 +61,6 @@
                     <Setter Property="CommandParameter" Value="{Binding Path=Id}"/>
                 </Style>
             </Menu.ItemContainerStyle>
-            <!--<MenuItem Header="Файл" >
-                <MenuItem Header="Открыть файл вопросов" Command="{Binding OpenFileCommand}"/>
-                <Separator></Separator>
-                <MenuItem Header="Выход" Command="{Binding ExitCommand}"/>
-            </MenuItem>
-            <MenuItem Header="Список тем" ItemsSource="{Binding themesList}" Command="{Binding SelectThemeCommand}">
-               
-            </MenuItem>-->
         </Menu>
 
     </Grid>

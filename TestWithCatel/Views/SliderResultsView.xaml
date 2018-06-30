@@ -8,15 +8,12 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
-        <Label Grid.Row="0" Content="Ваш результат:" />
-        <TextBlock
-            Grid.Row="1"
-            TextWrapping="Wrap"
-            Text="{Binding Score}">
-        </TextBlock>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Label  Content="Количество правильных ответов:" FontFamily="Arial" FontSize="16" Margin="0, 0, 5, 0"/>
+            <Label Content="{Binding Score}" FontFamily="Arial" FontSize="16"/>
+        </StackPanel>
     </Grid>
-    
+
 </catel:UserControl>

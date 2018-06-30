@@ -12,7 +12,7 @@
     {
 
         public SliderResultsViewModel() {
-            //Score = _score;
+
         }
 
         public int Score

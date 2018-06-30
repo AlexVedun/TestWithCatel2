@@ -12,13 +12,16 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Label Content="Вопрос " />
-            <Label Content="{Binding QuestionNumber}" />
+            <Label Content="Вопрос " FontFamily="Arial" FontSize="14"/>
+            <Label Content="{Binding QuestionNumber}" FontFamily="Arial" FontSize="14"/>
         </StackPanel>
 
         <TextBlock
             Grid.Row="1"
             TextWrapping="Wrap"
+            FontStyle="Italic"
+            FontFamily="Arial"
+            FontSize="16"
             Text="{Binding QuestionText}">
         </TextBlock>
         <ListView Grid.Row="2" ItemsSource="{Binding Options}">
@@ -26,6 +29,8 @@
                 <DataTemplate>
                     <RadioButton
                         GroupName="default"
+                        FontFamily="Arial"
+                        FontSize="16"
                         Content="{Binding Name}"
                         Command="{Binding Command}"
                         CommandParameter="{Binding Id}"
